@@ -259,7 +259,16 @@ function addTask(event) {
 
 
 function toggleSidebar(show) {
- 
+  const navTab = elements.sideBarDiv;
+  const columnTab = elements.layout;
+
+  if (show) {
+    navTab.style.display = 'block';
+    columnTab.style.marginLeft = '250px';
+  } else {
+    navTab.style.display = 'none';
+    columnTab.style.marginLeft = '0';
+  }
 }
 
 function toggleTheme() {
