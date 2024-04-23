@@ -28,6 +28,7 @@ const elements = {
   hideSideBarBtn: document.getElementById('hide-side-bar-btn'),
   showSideBarBtn: document.getElementById('show-side-bar-btn'),
   themeSwitch: document.getElementById('switch'),
+  logoDiv: document.getElementById('side-logo-div'),
 
   // Select the main layout elements
   layout: document.getElementById('layout'),
@@ -264,15 +265,20 @@ function toggleSidebar(show) {
 
   if (show) {
     navTab.style.display = 'block';
-    columnTab.style.marginLeft = '250px';
   } else {
     navTab.style.display = 'none';
     columnTab.style.marginLeft = '0';
+    
   }
 }
 
 function toggleTheme() {
- 
+  document.body.classList.toggle('light-theme');
+  const isLightTheme = document.body.classList.contains('light-theme');
+  localStorage.setItem('light-theme', isLightTheme ? 'enabled' : 'disabled')
+  
+  const logoImg = isLightTheme ? './assets/logo-light.svg' : './assets/logo-dark.svg';
+  elements.logo.src = logoImg;
 }
 
 
@@ -316,8 +322,14 @@ function saveTaskChanges(taskId) {
   const editedOutputTask = patchTask(editedTask);
 
   // Close the modal and refresh the UI to reflect the changes
-  toggleModal(false, elements.editTaskModal);
-  refreshTasksUI();
+  if (updatedTaskResult) {
+    // Close the modal
+    toggleModal(false, elements.editTaskModal);
+    // Refresh the UI to reflect the changes
+    refreshTasksUI();
+  } else {
+    console.error('Failed to update task.'); // Handle error if update fails
+  }
 }
 
 /*************************************************************************************************************************************************/
