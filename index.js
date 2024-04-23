@@ -270,13 +270,18 @@ function toggleTheme() {
 
 function openEditTaskModal(task) {
   // Set task details in modal inputs
-  
+  elements.editTaskTitleInput.value = task.title;
+  elements.editTaskDescInput.value = task.description;
+  elements.editSelectStatus.value = task.status;
 
   // Get button elements from the task modal
-
-
+  const saveBtnChanges = elements.saveTaskChangesBtn;
+  const deleteButton = elements.deleteTaskBtn;
   // Call saveTaskChanges upon click of Save Changes button
- 
+  saveBtnChanges.addEventListener('click', () => {
+    const taskId = task.id;
+    saveTaskChanges(taskId);
+  });
 
   // Delete task using a helper function and close the task modal
 
@@ -292,7 +297,7 @@ function saveTaskChanges(taskId) {
 
   // Create an object with the updated task details
   const editedTask = {
-    id: idTask,
+    id: taskId,
     title: editTitle,
     description: editDescription,
     status: editStatus
