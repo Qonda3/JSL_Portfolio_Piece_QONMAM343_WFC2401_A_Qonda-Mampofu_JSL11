@@ -80,6 +80,7 @@ let activeBoard = ""
 function fetchAndDisplayBoardsAndTasks() {
   const tasks = getTasks();
   const boards = [...new Set(tasks.map(task => task.board).filter(Boolean))];
+  console.log(boards.length);
   displayBoards(boards);
   if (boards.length > 0) {
     const localStorageBoard = JSON.parse(localStorage.getItem("activeBoard"))
@@ -115,7 +116,7 @@ function displayBoards(boards) {
 // TASK: Fix Bugs
 function filterAndDisplayTasksByBoard(boardName) {
   const tasks = getTasks(); // Fetch tasks from a simulated local storage function
-  const filteredTasks = tasks.filter(task => task.board == boardName);
+  const filteredTasks = tasks.filter(task => task.board === boardName);
 
   // Ensure the column titles are set outside of this function or correctly initialized before this function runs
 
@@ -135,6 +136,7 @@ function filterAndDisplayTasksByBoard(boardName) {
       taskElement.classList.add("task-div");
       taskElement.textContent = task.title;
       taskElement.setAttribute('data-task-id', task.id);
+
 
       // Listen for a click event on each task and open a modal
       taskElement.addEventListener('click', () => { 
@@ -267,7 +269,6 @@ function toggleSidebar(show) {
     navTab.style.display = 'block';
   } else {
     navTab.style.display = 'none';
-    columnTab.style.marginLeft = '0';
   }
 }
 
@@ -293,14 +294,14 @@ function openEditTaskModal(task) {
   const deleteButton = elements.deleteTaskBtn;
   // Call saveTaskChanges upon click of Save Changes button
   saveBtnChanges.addEventListener('click', () => {
-    const taskId = task.id;
-    saveTaskChanges(taskId);
+    //const taskId = task.id;
+    saveTaskChanges(task.id);
   });
 
   // Delete task using a helper function and close the task modal
 
 
-  toggleModal(true, elements.editTaskModal); // Show the edit task modal
+  toggleModal(true, elements.editTaskModalWindow); // Show the edit task modal
 }
 
 function saveTaskChanges(taskId) {
@@ -334,6 +335,7 @@ function saveTaskChanges(taskId) {
 /*************************************************************************************************************************************************/
 
 document.addEventListener('DOMContentLoaded', function() {
+  initializeData();
   init(); // init is called after the DOM is fully loaded
 });
 
