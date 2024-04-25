@@ -130,7 +130,7 @@ function filterAndDisplayTasksByBoard(boardName) {
 
     const tasksContainer = document.createElement("div");
     column.appendChild(tasksContainer);
-
+  
     filteredTasks.filter(task => task.status === status).forEach(task => { 
       const taskElement = document.createElement("div");
       taskElement.classList.add("task-div");
@@ -316,6 +316,7 @@ function saveTaskChanges(taskId) {
   const editDescription = elements.editTaskDescInput.value;
   const editStatus = elements.editSelectStatus.value;
 
+  
   // Create an object with the updated task details
   const editedTask = {
     id: taskId,
@@ -325,14 +326,14 @@ function saveTaskChanges(taskId) {
   }
 
   // Update task using patchTask functoin
-  patchTask(editedTask.id, editedTask);
+  patchTask(taskId, editedTask);
 
-  // Save updated tasks to local storage
-  const updatedTasks = getTasks(); // Fetch updated tasks
+  
   // Close the modal
   toggleModal(false, elements.editTaskModalWindow);
   // Refresh the UI to reflect the changes
   refreshTasksUI();
+  location.reload();
 }
 
 /*************************************************************************************************************************************************/
