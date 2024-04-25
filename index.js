@@ -35,7 +35,6 @@ const elements = {
   layout: document.getElementById('layout'),
   header: document.getElementById('header'),
   headerBoardName: document.getElementById('header-board-name'),
-  addNewTaskBtn: document.getElementById('add-new-task-btn'),
   editBoardBtn: document.getElementById('edit-board-btn'),
   editBoardDiv: document.getElementById('editBoardDiv'),
 
@@ -132,7 +131,7 @@ function filterAndDisplayTasksByBoard(boardName) {
     const tasksContainer = document.createElement("div");
     column.appendChild(tasksContainer);
 
-    filteredTasks.filter(task => task.status == status).forEach(task => { 
+    filteredTasks.filter(task => task.status === status).forEach(task => { 
       const taskElement = document.createElement("div");
       taskElement.classList.add("task-div");
       taskElement.textContent = task.title;
@@ -197,7 +196,7 @@ function addTaskToUI(task) {
 function setupEventListeners() {
   // Cancel editing task event listener
   const cancelEditBtn = document.getElementById('cancel-edit-btn');
-  cancelEditBtn.addEventListener('click', () => toggleModal(false, elements.editTaskModal));
+  cancelEditBtn.addEventListener('click', () => toggleModal(false, elements.editTaskModalWindow));
 
   // Cancel adding new task event listener
   const cancelAddTaskBtn = document.getElementById('cancel-add-task-btn');
@@ -248,7 +247,8 @@ function addTask(event) {
     const task = {
       title: elements.titleInput.value,
       description: elements.descInput.value,
-      status: elements.selectStatus.value
+      status: elements.selectStatus.value,
+      board: activeBoard,
     };
 
     const newTask = createNewTask(task);
@@ -264,10 +264,9 @@ function addTask(event) {
 
 function toggleSidebar(show) {
   const navTab = elements.sideBarDiv;
-  const columnTab = elements.layout;
 
   if (show) {
-    navTab.style.display = 'block';
+    navTab.style.display = 'flex';
     elements.showSideBarBtn.style.display = 'none'; 
   } else {
     navTab.style.display = 'none';
@@ -297,12 +296,15 @@ function openEditTaskModal(task) {
   const deleteButton = elements.deleteTaskBtn;
   // Call saveTaskChanges upon click of Save Changes button
   saveBtnChanges.addEventListener('click', () => {
-    //const taskId = task.id;
     saveTaskChanges(task.id);
   });
 
   // Delete task using a helper function and close the task modal
-
+  deleteButton.addEventListener('click', () => {
+    deleteTask(task.id);
+    toggleModal(false, elements.editTaskModalWindow);
+    refreshTasksUI();
+  });
 
   toggleModal(true, elements.editTaskModalWindow); // Show the edit task modal
 }
@@ -325,9 +327,9 @@ function saveTaskChanges(taskId) {
   const editedOutputTask = patchTask(editedTask);
 
   // Close the modal and refresh the UI to reflect the changes
-  if (updatedTaskResult) {
+  if (editedOutputTask) {
     // Close the modal
-    toggleModal(false, elements.editTaskModal);
+    toggleModal(false, elements.editTaskModalWindow);
     // Refresh the UI to reflect the changes
     refreshTasksUI();
   } else {
