@@ -30,6 +30,7 @@ const elements = {
   themeSwitch: document.getElementById('switch'),
   logoDiv: document.getElementById('side-logo-div'),
 
+
   // Select the main layout elements
   layout: document.getElementById('layout'),
   header: document.getElementById('header'),
@@ -267,8 +268,10 @@ function toggleSidebar(show) {
 
   if (show) {
     navTab.style.display = 'block';
+    elements.showSideBarBtn.style.display = 'none'; 
   } else {
     navTab.style.display = 'none';
+    elements.showSideBarBtn.style.display = 'block';
   }
 }
 
