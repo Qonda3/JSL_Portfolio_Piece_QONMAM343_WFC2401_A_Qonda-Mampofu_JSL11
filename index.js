@@ -297,6 +297,7 @@ function openEditTaskModal(task) {
   // Call saveTaskChanges upon click of Save Changes button
   saveBtnChanges.addEventListener('click', () => {
     saveTaskChanges(task.id);
+    
   });
 
   // Delete task using a helper function and close the task modal
@@ -323,18 +324,15 @@ function saveTaskChanges(taskId) {
     status: editStatus
   }
 
-  // Update task using a hlper functoin
-  const editedOutputTask = patchTask(editedTask);
+  // Update task using patchTask functoin
+  patchTask(editedTask.id, editedTask);
 
-  // Close the modal and refresh the UI to reflect the changes
-  if (editedOutputTask) {
-    // Close the modal
-    toggleModal(false, elements.editTaskModalWindow);
-    // Refresh the UI to reflect the changes
-    refreshTasksUI();
-  } else {
-    console.error('Failed to update task.'); // Handle error if update fails
-  }
+  // Save updated tasks to local storage
+  const updatedTasks = getTasks(); // Fetch updated tasks
+  // Close the modal
+  toggleModal(false, elements.editTaskModalWindow);
+  // Refresh the UI to reflect the changes
+  refreshTasksUI();
 }
 
 /*************************************************************************************************************************************************/
